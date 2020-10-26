@@ -1,0 +1,16 @@
+Main Routing Pages-node (urls for "get/)
+    app.get('/') = home page 
+    app.get('/questions) = questions modal page
+    app.get('/answer) = answer modal-page
+    app.get('/register) 
+    app.get('/login)
+
+    app.post('/answer);
+    app.post('/question)
+
+    app.delete('/question)
+    app.delete('/answer)
+
+Client Side
+    connect react/component pages to main App.js
+    connect server side to react client side
