@@ -1,0 +1,28 @@
+.App {
+  text-align: center;
+}
+
+.btn-primary {
+  color: goldenrod;
+  background-color: rgb(213, 241, 241);
+  border-color: #222774
+}
+
+.btn-primary:hover {
+  color: #212529;
+  background-color: #52bebe;
+  border-color: #8ad3d3
+}
+
+body {
+  background-color: #516077;
+  /* background-image: url(https://cimg1.ibsrv.net/ibimg/hgm/1920x1080-1/100/766/supercharge-electric-race-series_100766629.jpg); */
+}
+
+.Carphoto {
+  background-repeat: no-repeat;
+  width: 90%;
+  height: 90%;
+  opacity: .3;
+  margin-left: 5%;
+  }
