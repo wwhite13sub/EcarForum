@@ -1,59 +1,78 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+// const port = process.env.PORT || 4000;
 const mysql = require("mysql");
-// const mysqlConnection = require("./routes/connection")
 const bodyParser = require("body-parser");
 const hbs = require('express-handlebars');
-const port = process.env.PORT || 4000;
-const cors = require('cors');
+
 require('dotenv').config();
 
 
 //Bootstrap 4.5.3 installed
 //jquery + popper installed 3.5.1  1.16.1
+
+//parse requests of content-type -application/json
 app.use(bodyParser.json());
-app.use(cors());
+
+//parse requests of content-type -application/x-www--form-urlencoded
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+const db = require("../server/models");
+
+db.sequelize.sync();
+//drop the table if it already exists
+//db.sequelize.sync({ force: true }).then(() => {
+   //console.log("Drop and re-sync db."); 
+//});
+
+app.use(cors(corsoptions));
 app.use(express.json()); //this calls middleware for post json body parser
 
 
 
 
-const SELECT_ALL_QUESTIONS_QUERY = 'SELECT * FROM Question_TBL';
+// const SELECT_ALL_QUESTIONS_QUERY = 'SELECT * FROM Question_TBL';
 
-const connection = mysql.createConnection({
-    host: process.env.host,
-    user: process.env.user,
-    password: process.env.password,
-    database: process.env.database,
-    multipleStatements: true
+// const connection = mysql.createConnection({
+//     host: process.env.host,
+//     user: process.env.user,
+//     password: process.env.password,
+//     database: process.env.database,
+//     multipleStatements: true
 
-});
+// });
 
-connection.connect(err => {
-    if (err) {
-        return err;
-    }
-});
+// connection.connect(err => {
+//     if (err) {
+//         return err;
+//     }
+// });
 
+
+
+//simple route
 app.get('/', function (req, res) {
-    res.send("This is server connected!");
+    res.send("Welcome to Electric Car Forum.");
 });
 
-app.get('/Question', (req, res) => {
-    connection.query(SELECT_ALL_QUESTIONS_QUERY, (err, results) => {
-        if (err) {
-            return res.send(err)
-        }
-        else {
-            return res.json({
-                data: results
-            })
-        }
-    });
-});
+// app.get('/Question', (req, res) => {
+//     connection.query(SELECT_ALL_QUESTIONS_QUERY, (err, results) => {
+//         if (err) {
+//             return res.send(err)
+//         }
+//         else {
+//             return res.json({
+//                 data: results
+//             })
+//         }
+//     });
+// });
+
+require("../server/routes/question")(app);
 
 
-
+const port = process.env.PORT || 4000;
 app.listen(port, function () {
     console.log(`Listening through port ${port}. `)
 });
