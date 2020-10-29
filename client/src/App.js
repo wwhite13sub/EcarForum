@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import NavBar from './Components/navbar';
+import NavigationBar from './Components/NavigationBar';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import RegisterForm from './Components/register';
-import Login from './Components/login';
+import RegisterForm from './Components/RegisterForm';
+import LoginForm from './Components/LoginForm';
 import Images from '../src/Images/ElectCar.jpg';
 
 
@@ -14,13 +14,12 @@ class App extends Component {
     return (
       <Router>
         <div className="container-fluid">
-            <NavBar />
+            <NavigationBar />
             <Route path='/Register' component={ RegisterForm }/>
-            <Route path='/Login' component={Login} />
+            <Route path='/Login' component={LoginForm} />
         </div>
         <div>
-        <img src={Images} className="Carphoto" alt="background" />
-        <RegisterForm />
+          <img src={Images} className="Carphoto" alt="background" />
         </div>
       </Router>
     )    

@@ -14,7 +14,7 @@ class App extends Component {
     }
   
     getQuestions = _ => {
-      fetch('http://localhost:4000/question')
+      fetch('http://localhost:4000/api/questions') ///or axios.get---install axios
       .then(response => response.json())
       .then(response => this.setState({ questions: response.data }))
       .catch(err => console.error(error))

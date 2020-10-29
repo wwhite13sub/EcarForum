@@ -16,7 +16,7 @@
 
 body {
   background-color: #516077;
-  /* background-image: url(https://cimg1.ibsrv.net/ibimg/hgm/1920x1080-1/100/766/supercharge-electric-race-series_100766629.jpg); */
+  
 }
 
 .Carphoto {
@@ -26,3 +26,7 @@ body {
   opacity: .3;
   margin-left: 5%;
   }
+
+.absolute {
+  position: absolute;
+}
