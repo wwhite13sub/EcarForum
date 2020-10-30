@@ -91,7 +91,7 @@ class RegisterForm extends React.Component {
       render() {
         return (
           <div>
-            <form onSubmit={this.handleSubmit} className="text-sm-center">
+            <form onSubmit={this.handleSubmit} className="text-sm-center form-container">
               <h1>Register</h1>
               <div className="form-group">
                 <div>
@@ -134,7 +134,7 @@ class RegisterForm extends React.Component {
                   id="confirm_password" />
                 <span className="absolute text-danger mx-2">{this.state.errors.confirm_password}</span>
               </div>
-              <button type="submit" className="btn btn-success">Submit</button>
+              <button type="submit" className="btn btn-primary">Register</button>
             </form>
           </div>
         );
