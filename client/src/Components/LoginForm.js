@@ -9,7 +9,7 @@ import {
 class LoginForm extends React.Component {
     render() {
         return (
-            <Form>
+            <Form className="form-container">
                 <h2>Login</h2>
                 <Form.Group controlId="formBasicUsername">
                     <Form.Label>Username</Form.Label>
