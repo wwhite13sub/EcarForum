@@ -40,3 +40,23 @@ body {
   margin-top: 55px;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
+.transparent-background {
+  background-color: rgba(255,255,255,0.8);
+}
+
+.dashborad-wrapper {
+  margin-top: 100px;
+}
+
+.selected {
+  background-color: rgba(128,104,189,0.8);
+}
+
+
+.relative {
+  position: relative;
+}
