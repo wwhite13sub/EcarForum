@@ -16,7 +16,9 @@
 
 body {
   background-color: #516077;
-  
+  background-image: url('Images/ElectCar.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .Carphoto {
@@ -29,4 +31,12 @@ body {
 
 .absolute {
   position: absolute;
+  max-width: 240px;
 }
+.form-container {
+  background-color: rgba(255,255,255,0.8);
+  padding: 20px;
+  border-radius: 50px;
+  margin-top: 55px;
+}
+
