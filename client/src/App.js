@@ -18,9 +18,6 @@ class App extends Component {
             <Route path='/Register' component={ RegisterForm }/>
             <Route path='/Login' component={LoginForm} />
         </div>
-        <div>
-          <img src={Images} className="Carphoto" alt="background" />
-        </div>
       </Router>
     )    
   }
