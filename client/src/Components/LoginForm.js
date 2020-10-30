@@ -10,7 +10,7 @@ class LoginForm extends React.Component {
     render() {
         return (
             <Form className="form-container">
-                <h2>Login</h2>
+                <h1>Login</h1>
                 <Form.Group controlId="formBasicUsername">
                     <Form.Label>Username</Form.Label>
                     <Form.Control type="text" placeholder="Enter Username" />

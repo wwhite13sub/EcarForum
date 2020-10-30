@@ -5,7 +5,7 @@ import NavigationBar from './Components/NavigationBar';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import RegisterForm from './Components/RegisterForm';
 import LoginForm from './Components/LoginForm';
-import Images from '../src/Images/ElectCar.jpg';
+
 
 
 
@@ -15,8 +15,10 @@ class App extends Component {
       <Router>
         <div className="container-fluid">
             <NavigationBar />
+            
             <Route path='/Register' component={ RegisterForm }/>
             <Route path='/Login' component={LoginForm} />
+            
         </div>
       </Router>
     )    
