@@ -54,9 +54,22 @@ body {
 
 .selected {
   background-color: rgba(128,104,189,0.8);
+  /*color: #FFFFFF;*/
 }
 
 
 .relative {
   position: relative;
+}
+
+.modal-container {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(0,0,0,0.6); 
+}
+.answer-modal {
+  z-index: 1;
 }

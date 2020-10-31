@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 import {
    Form,
@@ -7,6 +8,11 @@ import {
 } from 'react-bootstrap';
 
 class LoginForm extends React.Component {
+    // function App() {
+    //     let history = useHistory();
+    //   }
+    // this.props.history.push("/Dashboard");
+
     render() {
         return (
             <Form className="form-container">
