@@ -73,3 +73,7 @@ body {
 .answer-modal {
   z-index: 1;
 }
+.modal-content {
+  max-height: 800px;;
+  overflow-y: scroll;
+}

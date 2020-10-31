@@ -36,6 +36,29 @@ function Details(props) {
                 </div>
 
                 {props.loadQuestionList()}
+
+
+                <div className="row mt-3">
+                    <div className="col-12 d-flex justify-content-center">
+                        <nav>
+                            <ul className="pagination">
+                                <li className="page-item">
+                                    <a className="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span className="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                {props.generateQuestionListPageNumbers()}
+                                <li className="page-item">
+                                    <a className="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span className="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
             </div>
         )
     }
@@ -84,48 +107,61 @@ class Dashboard extends React.Component {
                 }
                 
             ],
-            questionList: [
-                {
-                    Category_num: 1,
-                    Question_num: 1,
-                    user: {
-                        user_firstname: 'Wanda 1'
+            questionList: {
+                data: [
+                    {
+                        Category_num: 1,
+                        Question_num: 1,
+                        user: {
+                            user_firstname: 'Wanda 1'
+                        },
+                        Question_Date_Time: '11/11/2020 16:12',
+                        Answer_num: 3,
+                        Question_descr: 'What is cost?'
                     },
-                    Question_Date_Time: '11/11/2020 16:12',
-                    Answer_num: 3,
-                    Question_descr: 'What is cost?'
-                },
-                {
-                    Category_num: 1,
-                    Question_num: 2,
-                    user: {
-                        user_firstname: 'Wanda 2'
+                    {
+                        Category_num: 1,
+                        Question_num: 2,
+                        user: {
+                            user_firstname: 'Wanda 2'
+                        },
+                        Question_Date_Time: '11/13/2020 16:12',
+                        Answer_num: 4,
+                        Question_descr: 'What are the colors?'
                     },
-                    Question_Date_Time: '11/13/2020 16:12',
-                    Answer_num: 4,
-                    Question_descr: 'What are the colors?'
-                },
-                {
-                    Category_num: 1,
-                    Question_num: 3,
-                    user: {
-                        user_firstname: 'Wanda 1'
+                    {
+                        Category_num: 1,
+                        Question_num: 3,
+                        user: {
+                            user_firstname: 'Wanda 1'
+                        },
+                        Question_Date_Time: '11/15/2020 16:12',
+                        Answer_num: 1,
+                        Question_descr: 'Is it fast?'
                     },
-                    Question_Date_Time: '11/15/2020 16:12',
-                    Answer_num: 1,
-                    Question_descr: 'Is it fast?'
-                },
-                {
-                    Category_num: 1,
-                    Question_num: 4,
-                    user: {
-                        user_firstname: 'Wanda 3'
+                    {
+                        Category_num: 1,
+                        Question_num: 4,
+                        user: {
+                            user_firstname: 'Wanda 3'
+                        },
+                        Question_Date_Time: '11/20/2020 16:12',
+                        Answer_num: 8,
+                        Question_descr: 'Will it make me sexy?'
                     },
-                    Question_Date_Time: '11/20/2020 16:12',
-                    Answer_num: 8,
-                    Question_descr: 'Will it make me sexy?'
-                }
-            ],
+                    {
+                        Category_num: 1,
+                        Question_num: 5,
+                        user: {
+                            user_firstname: 'Wanda 5'
+                        },
+                        Question_Date_Time: '11/13/2020 16:12',
+                        Answer_num: 3,
+                        Question_descr: 'Am I awesome?'
+                    }
+                ],
+                noOfPages: 3
+            },
 
             selectedQuestion: {},
 
@@ -157,16 +193,20 @@ class Dashboard extends React.Component {
                     }
                 ],
                 noOfPages: 4
-            }
+            },
+
+            currentQuestionAnswersPageNo: 1,
+            currentQuestionListPageNo: 1
         };
     }
 
     changeDetails = (type, category) => {
-        console.log(type, category);
         this.setState({
             detailsType: type,
             selectedCategory: category
-        })
+        });
+
+        this.resetQuestionListPageNumber();
     }
 
     // This will pull from categories array 
@@ -186,22 +226,6 @@ class Dashboard extends React.Component {
         return categoryListMarkup;
     }
 
-    // controlFormVisibility = () => {
-    //     if (!this.state.modalFormShow) {
-    //         return null;
-    //     }
-
-    // showModalForm = () => {
-    //         this.setState({
-    //             modalFormShow: true
-    //         });
-    //     }
-    // hideModalForm = () => {
-    //         this.setState({
-    //             modalFormShow: false
-    //         });
-    //     }
-
    //These functions return true or false depending on "actions"
     showQuestionDetailModal = (question) => {
         console.log(question);
@@ -215,6 +239,8 @@ class Dashboard extends React.Component {
         this.setState({
             questionDetailModalShow: false
         })
+
+        this.resetPageNumber();
     }
 
     showAnswerModal = (question) => {
@@ -245,7 +271,7 @@ class Dashboard extends React.Component {
 
     //this will loop new questions list 
     loadQuestionList = () => {
-        const questionListMarkup = this.state.questionList.map((question, index) => {
+        const questionListMarkup = this.state.questionList.data.map((question, index) => {
             return (
                 <div className="row my-4" key={index}>
                     <div className="col-12 col-sm-8">
@@ -283,6 +309,55 @@ class Dashboard extends React.Component {
         });
 
         return answersMarkup;
+    }
+
+
+    generatePageNumbers = () =>  {
+        const pageNumberArray = [...Array(this.state.questionAnswers.noOfPages).keys()];
+        console.log('pageNumberArray', pageNumberArray);
+        const pageNumbersMarkup = pageNumberArray.map((pageNumber) => {
+            return (
+                <li className="page-item"><a onClick={(event) => this.changePageNumber(pageNumber+1)} className={'page-link '+((pageNumber+1 === this.state.currentQuestionAnswersPageNo)?'selected':'')} href="#">{pageNumber+1}</a></li>
+            );
+        });
+
+        return pageNumbersMarkup;
+    }
+
+    generateQuestionListPageNumbers = () =>  {
+        const pageNumberArray = [...Array(this.state.questionList.noOfPages).keys()];
+        console.log('pageNumberArray', pageNumberArray);
+        const pageNumbersMarkup = pageNumberArray.map((pageNumber) => {
+            return (
+                <li className="page-item"><a onClick={(event) => this.changeQuestionListPageNumber(pageNumber+1)} className={'page-link '+((pageNumber+1 === this.state.currentQuestionListPageNo)?'selected':'')} href="#">{pageNumber+1}</a></li>
+            );
+        });
+
+        return pageNumbersMarkup;
+    }
+
+    changePageNumber = (page) => {
+        this.setState({
+            currentQuestionAnswersPageNo: page
+        })
+    }
+
+    changeQuestionListPageNumber = (page) => {
+        this.setState({
+            currentQuestionListPageNo: page
+        })
+    }
+
+    resetPageNumber = () => {
+        this.setState({
+            currentQuestionAnswersPageNo: 1
+        })
+    }
+
+    resetQuestionListPageNumber = () => {
+        this.setState({
+            currentQuestionListPageNo: 1
+        })
     }
 
     //This shows content of Modal 
@@ -330,6 +405,28 @@ class Dashboard extends React.Component {
                                         {this.populateAnswers()}
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div className="row mt-3">
+                            <div className="col-12 d-flex justify-content-center">
+                                <nav>
+                                    <ul className="pagination">
+                                        <li className="page-item">
+                                            <a className="page-link" href="#" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                                <span className="sr-only">Previous</span>
+                                            </a>
+                                        </li>
+                                        {this.generatePageNumbers()}
+                                        <li className="page-item">
+                                            <a className="page-link" href="#" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                                <span className="sr-only">Next</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
@@ -561,6 +658,7 @@ class Dashboard extends React.Component {
                         selectedCategory={this.state.selectedCategory}
                         loadQuestionList={this.loadQuestionList}
                         showNewQuestionModal={this.showNewQuestionModal}
+                        generateQuestionListPageNumbers={this.generateQuestionListPageNumbers}
                     />
                 </div>
 
