@@ -1,7 +1,8 @@
 // import App from './App';
 //This is HOME page for components
 import React from 'react';
-
+import { connect } from 'react-redux';
+import { Redirect } from "react-router-dom";
 
 function Details(props) {
     switch(props.type) {
@@ -647,6 +648,9 @@ class Dashboard extends React.Component {
     
 
     render() {
+        if (!this.props.loggedIn) {
+          return <Redirect to='/Login' />
+        }
         return (
             <div className="row dashborad-wrapper">
                 <div className="col-12 col-sm-3">
@@ -672,7 +676,15 @@ class Dashboard extends React.Component {
 }
 
 
-export default Dashboard;
+function mapState(state) {
+    const { loggedIn } = state.authentication;
+    return { loggedIn };
+}
+
+const actionCreators = {
+}
+      
+export default connect(mapState, actionCreators)(Dashboard);
 // Select a Category to view its questions
 
 // -Category 1 BMW Int3 //Onclick expand list of questions and total answers

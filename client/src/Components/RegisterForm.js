@@ -1,4 +1,7 @@
 import React from 'react';
+import { userActions } from './../redux/actions';
+import { connect } from 'react-redux';
+import { Redirect } from "react-router-dom";
 
 class RegisterForm extends React.Component {
   constructor() {
@@ -34,8 +37,6 @@ class RegisterForm extends React.Component {
     });
   }
 
-
-
   handleSubmit = (event) => {
     event.preventDefault();
 
@@ -47,12 +48,11 @@ class RegisterForm extends React.Component {
 
     //process data
     //send the info to the backend
-    alert('Thanks');
+    this.props.register(this.state.input);
   }
 
   validate = () => {
     let input = this.state.input;
-    console.log('input', input);
     let errors = {};
     let isValid = true;
 
@@ -107,6 +107,12 @@ class RegisterForm extends React.Component {
     return isValid;
   }
   render() {
+    if (this.props.registrationSuccess) {
+      return <Redirect to='/Login' />
+    }
+    if (this.props.loggedIn) {
+      return <Redirect to='/Dashboard' />
+    }
     return (
       <div>
         <form onSubmit={this.handleSubmit} className="form-container">
@@ -162,8 +168,19 @@ class RegisterForm extends React.Component {
           </div>
           
         );
-      }
-    }
+  }
+}
 
+function mapState(state) {
+    const { registering, registrationSuccess } = state.registration;
+    const { loggedIn } = state.authentication;
 
-    export default RegisterForm;
+    return { registering, registrationSuccess, loggedIn };
+}
+
+const actionCreators = {
+    register: userActions.register
+}
+      
+export default connect(mapState, actionCreators)(RegisterForm);
+

@@ -1,8 +1,46 @@
 import React from 'react';
 import { Navbar,Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { userActions } from '../redux/actions';
+
+
+function NavButtons(props) {
+  if (props.loggedIn) {
+    return (
+      <Nav className="nav navbar-nav right">
+        <form method="post" className="form-inline my-2 my-lg-0">
+          <div className="text-white mr-3">Welcome {props.user.username}</div>
+          <button type="button" className="btn btn-primary my-2 my-sm-0" onClick={props.logout}>
+            Logout
+          </button>
+        </form>
+      </Nav>
+    )
+  }
+
+  return (
+    <Nav className="nav navbar-nav right">
+      <form method="post" className="form-inline my-2 my-lg-0">
+        <button type="button" className="btn btn-primary my-2 my-sm-0">
+          <Link to="/Register">
+            Register
+          </Link>
+        </button>
+        <button type="button" className="btn btn-primary my-2 my-sm-0">
+          <Link to="/Login">
+            Login
+          </Link>
+        </button>
+      </form>
+    </Nav>
+  )
+}
 
 class NavigationBar extends React.Component {
+  constructor() {
+    super();
+  }
 
   render() {
     return (
@@ -12,25 +50,16 @@ class NavigationBar extends React.Component {
         <Navbar.Collapse id=" responsive-navbar-nav">
           <Nav className="navbar-nav mr-auto mt-2 mt-lg-0">
               
-            
-          <Nav className="nav navbar-nav right">
-            <form method="post" className="form-inline my-2 my-lg-0">
-              <button type="button" className="btn btn-primary my-2 my-sm-0">
-                <Link to="/Register">
-                  Register
-                </Link>
-              </button>
-              <button type="button" className="btn btn-primary my-2 my-sm-0">
-                <Link to="/Login">
-                  Login
-                </Link>
-              </button>
-            </form>
-          </Nav>
+            <NavButtons 
+              loggedIn={this.props.loggedIn} 
+              logout={this.props.logout} 
+              user={this.props.user} 
+            />
+          
       
           </Nav>
         </Navbar.Collapse>
-</Navbar>
+      </Navbar>
 
       //     <ul className="nav navbar-nav navbar-right">
       //       <form method="post">
@@ -44,4 +73,13 @@ class NavigationBar extends React.Component {
   };
 }
 
-export default NavigationBar;
+function mapState(state) {
+    const { loggedIn, user } = state.authentication;
+    return { loggedIn, user };
+}
+
+const actionCreators = {
+  logout: userActions.logout
+};
+
+export default connect(mapState, actionCreators)(NavigationBar);
