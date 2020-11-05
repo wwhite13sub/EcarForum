@@ -483,7 +483,7 @@ class Dashboard extends React.Component {
 
 
     newQuestionModal = () => {
-        if (!this.state.newQuestionModalShow) {
+        if (!this.state.newQuestionModalShow || this.props.newQuestionSaved) {
             return;
         }
 
@@ -553,10 +553,16 @@ class Dashboard extends React.Component {
         }
 
         //process the question
-        this.setState({
-            newQuestion: ''
+        this.props.newQuestion({
+            Category_num: this.state.selectedCategory.Category_num,
+            Question_descr: this.state.newQuestion,
+            user_ID: this.props.user.id
         });
-        alert('Your question has been asked');
+
+
+        // this.setState({
+        //     newQuestion: ''
+        // });
     }
 
     validateNewQuestion = () => {
@@ -664,13 +670,14 @@ class Dashboard extends React.Component {
 
 
 function mapState(state) {
-    const { loggedIn } = state.authentication;
-    const { categories } = state.category;
-    return { loggedIn, categories };
+    const { loggedIn, user } = state.authentication;
+    const { categories, newQuestionSaved } = state.category;
+    return { loggedIn, categories, user, newQuestionSaved };
 }
 
 const actionCreators = {
-    getCategories: categoryActions.getCategories
+    getCategories: categoryActions.getCategories,
+    newQuestion: categoryActions.newQuestion
 }
       
 export default connect(mapState, actionCreators)(Dashboard);
