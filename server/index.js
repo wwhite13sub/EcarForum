@@ -31,6 +31,7 @@ router.get('/', function(req, res) {
 router.post('/register',register.register);
 router.post('/login',authentication.login);
 router.get('/get-categories',category.categories);
+router.post('/new-question',category.newQuestion);
 app.use('/api', router);
 
 const port = process.env.PORT || 4000;
