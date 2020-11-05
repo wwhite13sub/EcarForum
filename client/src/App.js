@@ -32,7 +32,7 @@ class App extends Component {
                   <Route path="/Login" component={LoginForm} />
                   <Route path="/Dashboard" component={Dashboard} />
                   {/* this fuction if you load anything but the defined route will redirect to registration */}
-                  <Redirect from="*" to="/" />
+                  <Redirect from="*" to="/Register" />
               </Router>
             </div>
         </div>

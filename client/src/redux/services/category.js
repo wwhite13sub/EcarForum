@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { authHeader } from '../helpers';
 
 export const categoryService = {
     getCategories,
@@ -9,7 +10,11 @@ export const categoryService = {
 };
 
 function getCategories() {
-    return axios.get(`http://localhost:4000/api/get-categories`).then((categoriesResponse) => {
+    const options = {
+        headers: authHeader()
+    };
+    
+    return axios.get(`http://localhost:4000/api/get-categories`, options).then((categoriesResponse) => {
         return categoriesResponse;
     })
     .catch((error) => {
@@ -18,7 +23,11 @@ function getCategories() {
 }
 
 function newQuestion(data) {
-    return axios.post(`http://localhost:4000/api/new-question`, data).then((response) => {
+    const options = {
+        headers: authHeader()
+    };
+
+    return axios.post(`http://localhost:4000/api/new-question`, data, options).then((response) => {
         return response;
     })
     .catch((error) => {
@@ -27,7 +36,11 @@ function newQuestion(data) {
 }
 
 function getQuestionList(data) {
-    return axios.post(`http://localhost:4000/api/get-question-list`, data).then((response) => {
+    const options = {
+        headers: authHeader()
+    };
+
+    return axios.post(`http://localhost:4000/api/get-question-list`, data, options).then((response) => {
         return response;
     })
     .catch((error) => {
@@ -36,7 +49,11 @@ function getQuestionList(data) {
 }
 
 function newAnswer(data) {
-    return axios.post(`http://localhost:4000/api/new-answer`, data).then((response) => {
+    const options = {
+        headers: authHeader()
+    };
+
+    return axios.post(`http://localhost:4000/api/new-answer`, data, options).then((response) => {
         return response;
     })
     .catch((error) => {
@@ -45,7 +62,11 @@ function newAnswer(data) {
 }
 
 function getAnswerList(data) {
-    return axios.post(`http://localhost:4000/api/get-answer-list`, data).then((response) => {
+    const options = {
+        headers: authHeader()
+    };
+
+    return axios.post(`http://localhost:4000/api/get-answer-list`, data, options).then((response) => {
         return response;
     })
     .catch((error) => {
