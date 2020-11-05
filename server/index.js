@@ -18,6 +18,10 @@ app.use(function(req, res, next) {
 });
 
 const router = express.Router();
+
+//authorization middleware
+const auth = require('./middleware/auth');
+
 //register routes
 const register = require('./routes/register');
 const authentication = require('./routes/authentication');
@@ -30,11 +34,13 @@ router.get('/', function(req, res) {
 //route to handle user registration
 router.post('/register',register.register);
 router.post('/login',authentication.login);
-router.get('/get-categories',category.categories);
-router.post('/new-question',category.newQuestion);
-router.post('/get-question-list',category.getQuestionList);
-router.post('/new-answer',category.newAnswer);
-router.post('/get-answer-list',category.getAnswerList);
+
+//authorized routes
+router.get('/get-categories', auth, category.categories);
+router.post('/new-question', auth, category.newQuestion);
+router.post('/get-question-list', auth, category.getQuestionList);
+router.post('/new-answer', auth, category.newAnswer);
+router.post('/get-answer-list', auth, category.getAnswerList);
 app.use('/api', router);
 
 const port = process.env.PORT || 4000;
