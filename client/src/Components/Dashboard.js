@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from "react-router-dom";
 import { categoryActions } from './../redux/actions';
+import moment from 'moment';
 
 function Details(props) {
     switch(props.type) {
@@ -86,61 +87,6 @@ class Dashboard extends React.Component {
 
             detailsType: 'static',//questionList, questionDetails
             selectedCategory: null,
-            questionList: {
-                data: [
-                    {
-                        Category_num: 1,
-                        Question_num: 1,
-                        user: {
-                            user_firstname: 'Wanda 1'
-                        },
-                        Question_Date_Time: '11/11/2020 16:12',
-                        Answer_num: 3,
-                        Question_descr: 'What is cost?'
-                    },
-                    {
-                        Category_num: 1,
-                        Question_num: 2,
-                        user: {
-                            user_firstname: 'Wanda 2'
-                        },
-                        Question_Date_Time: '11/13/2020 16:12',
-                        Answer_num: 4,
-                        Question_descr: 'What are the colors?'
-                    },
-                    {
-                        Category_num: 1,
-                        Question_num: 3,
-                        user: {
-                            user_firstname: 'Wanda 1'
-                        },
-                        Question_Date_Time: '11/15/2020 16:12',
-                        Answer_num: 1,
-                        Question_descr: 'Is it fast?'
-                    },
-                    {
-                        Category_num: 1,
-                        Question_num: 4,
-                        user: {
-                            user_firstname: 'Wanda 3'
-                        },
-                        Question_Date_Time: '11/20/2020 16:12',
-                        Answer_num: 8,
-                        Question_descr: 'Will it make me sexy?'
-                    },
-                    {
-                        Category_num: 1,
-                        Question_num: 5,
-                        user: {
-                            user_firstname: 'Wanda 5'
-                        },
-                        Question_Date_Time: '11/13/2020 16:12',
-                        Answer_num: 3,
-                        Question_descr: 'Am I awesome?'
-                    }
-                ],
-                noOfPages: 3
-            },
 
             selectedQuestion: {},
 
@@ -183,6 +129,12 @@ class Dashboard extends React.Component {
         this.setState({
             detailsType: type,
             selectedCategory: category
+        });
+
+        this.props.getQuestionList({
+            page: 1,
+            Category_num: category.Category_num,
+            user_ID: this.props.user.id
         });
 
         this.resetQuestionListPageNumber();
@@ -254,12 +206,16 @@ class Dashboard extends React.Component {
 
     //this will loop new questions list 
     loadQuestionList = () => {
-        const questionListMarkup = this.state.questionList.data.map((question, index) => {
+        if (typeof this.props.questionList === 'undefined') {
+            return;
+        }
+
+        const questionListMarkup = this.props.questionList.data.map((question, index) => {
             return (
                 <div className="row my-4" key={index}>
                     <div className="col-12 col-sm-8">
                         <div>
-                            Question {question.Question_num} {question.Question_Date_Time} {question.Answer_num} answers
+                            Question {question.Question_num} {moment(question.Question_Date_Time).format('MM/DD/YYYY HH:mm')} {question.Answer_num} answers
                         </div>
                         <div>{question.Question_descr}</div>
                     </div>
@@ -308,7 +264,11 @@ class Dashboard extends React.Component {
     }
 
     generateQuestionListPageNumbers = () =>  {
-        const pageNumberArray = [...Array(this.state.questionList.noOfPages).keys()];
+        if (typeof this.props.questionList === 'undefined') {
+            return;
+        }
+
+        const pageNumberArray = [...Array(this.props.questionList.noOfPages).keys()];
         console.log('pageNumberArray', pageNumberArray);
         const pageNumbersMarkup = pageNumberArray.map((pageNumber, index) => {
             return (
@@ -328,6 +288,13 @@ class Dashboard extends React.Component {
     changeQuestionListPageNumber = (page) => {
         this.setState({
             currentQuestionListPageNo: page
+        });
+
+        //fetch new question list
+        this.props.getQuestionList({
+            page: page,
+            Category_num: this.state.selectedCategory.Category_num,
+            user_ID: this.props.user.id
         })
     }
 
@@ -364,7 +331,7 @@ class Dashboard extends React.Component {
                             <div className="col-4 font-weight-bold">
                                 <div>Category {this.state.selectedQuestion.Question_num}:  {this.state.selectedCategory.Category_descr}</div>
                                 <div>Question submitted by: {this.state.selectedQuestion.user.user_firstname}</div>
-                                <div>On {this.state.selectedQuestion.Question_Date_Time} {this.state.selectedQuestion.Answer_num} Answers</div>  
+                                <div>On {moment(this.state.selectedQuestion.Question_Date_Time).format('MM/DD/YYYY HH:mm')} {this.state.selectedQuestion.Answer_num} Answers</div>  
                             </div>
                             <div className="col-8 font-weight-bold">
                                 <div>
@@ -483,7 +450,7 @@ class Dashboard extends React.Component {
 
 
     newQuestionModal = () => {
-        if (!this.state.newQuestionModalShow || this.props.newQuestionSaved) {
+        if (!this.state.newQuestionModalShow) {
             return;
         }
 
@@ -560,9 +527,11 @@ class Dashboard extends React.Component {
         });
 
 
-        // this.setState({
-        //     newQuestion: ''
-        // });
+        //make the question empty and close the question modal
+        this.setState({
+            newQuestion: '',
+            newQuestionModalShow: false
+        });
     }
 
     validateNewQuestion = () => {
@@ -637,6 +606,16 @@ class Dashboard extends React.Component {
     componentDidMount = () => {
         this.props.getCategories();
     }
+
+    componentDidUpdate = () => {
+        if (this.props.newQuestionSaved) {
+            this.props.getQuestionList({
+                page: 1,
+                Category_num: this.state.selectedCategory.Category_num,
+                user_ID: this.props.user.id
+            });
+        }
+    }
     
 
     render() {
@@ -671,13 +650,14 @@ class Dashboard extends React.Component {
 
 function mapState(state) {
     const { loggedIn, user } = state.authentication;
-    const { categories, newQuestionSaved } = state.category;
-    return { loggedIn, categories, user, newQuestionSaved };
+    const { categories, newQuestionSaved, questionList } = state.category;
+    return { loggedIn, categories, user, newQuestionSaved, questionList };
 }
 
 const actionCreators = {
     getCategories: categoryActions.getCategories,
-    newQuestion: categoryActions.newQuestion
+    newQuestion: categoryActions.newQuestion,
+    getQuestionList: categoryActions.getQuestionList
 }
       
 export default connect(mapState, actionCreators)(Dashboard);

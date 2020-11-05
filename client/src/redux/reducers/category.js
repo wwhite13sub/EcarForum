@@ -16,6 +16,12 @@ export function category(state = initialState, action) {
       return {...state, newQuestionSaved: true};
     case categoryConstants.SAVE_QUESTION_FAILURE:
       return {};
+
+    case categoryConstants.GET_QUESTION_LIST_SUCCESS:
+      return {...state, newQuestionSaved: false, questionList: action.questionList};
+    case categoryConstants.GET_QUESTION_LIST_FAILURE:
+      return {};
+
     default:
       return state
   }

@@ -3,7 +3,8 @@ import { categoryService } from '../services';
 
 export const categoryActions = {
     getCategories,
-    newQuestion
+    newQuestion,
+    getQuestionList
 };
 
 function getCategories(username, password) {
@@ -38,4 +39,21 @@ function newQuestion(data) {
 
     function success(categories) { return { type: categoryConstants.SAVE_QUESTION_SUCCESS, categories } }
     function failure(error) { return { type: categoryConstants.SAVE_QUESTION_FAILURE, error } }
+}
+
+function getQuestionList(data) {
+    return dispatch => {
+        categoryService.getQuestionList(data)
+            .then(
+                res => { 
+                    dispatch(success(res.data.questionList));
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                }
+            );
+    };
+
+    function success(questionList) { return { type: categoryConstants.GET_QUESTION_LIST_SUCCESS, questionList } }
+    function failure(error) { return { type: categoryConstants.GET_QUESTION_LIST_FAILURE, error } }
 }
