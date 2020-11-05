@@ -33,7 +33,7 @@ function logout() {
     userService.logout();
     return { type: userConstants.LOGOUT };
 }
-
+//This function calls all dispatch
 function register(input) {
     return dispatch => {
         dispatch(request(input));

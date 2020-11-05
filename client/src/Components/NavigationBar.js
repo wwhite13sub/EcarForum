@@ -10,7 +10,7 @@ function NavButtons(props) {
     return (
       <Nav className="nav navbar-nav right">
         <form method="post" className="form-inline my-2 my-lg-0">
-          <div className="text-white mr-3">Welcome {props.user.username}</div>
+          <div className="text-white mr-3">Welcome, {props.user.username}</div>
           <button type="button" className="btn btn-primary my-2 my-sm-0" onClick={props.logout}>
             Logout
           </button>
