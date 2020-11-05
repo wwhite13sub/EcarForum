@@ -132,7 +132,7 @@ exports.newAnswer = async function(req,res){
 exports.getAnswerList = async function(req,res){
   const page = req.body.page;
   const Question_num = req.body.Question_num;
-  const perPage = 1;
+  const perPage = 5;
   const offset = (page - 1) * perPage;
 
   db.query('SELECT a.*, u.user_firstname FROM Answer_TBL AS a LEFT JOIN User_TBL AS u ON a.user_ID = u.user_ID WHERE a.Question_num='+Question_num+' ORDER BY a.Answer_Date_Time DESC LIMIT '+perPage+' OFFSET '+offset, async function (error, results, fields) {
