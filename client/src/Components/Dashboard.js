@@ -3,6 +3,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from "react-router-dom";
+import { categoryActions } from './../redux/actions';
 
 function Details(props) {
     switch(props.type) {
@@ -85,29 +86,6 @@ class Dashboard extends React.Component {
 
             detailsType: 'static',//questionList, questionDetails
             selectedCategory: null,
-            categories: [
-                {
-                    Category_num: 1,
-                    Category_descr: 'BMW Int3'
-                },
-                {
-                    Category_num: 2,
-                    Category_descr: 'Chevrolet Bolt'
-                },
-                {
-                    Category_num: 3,
-                    Category_descr: 'Kia Soul'
-                },
-                {
-                    Category_num: 4,
-                    Category_descr: 'Nissan Leaf'
-                },
-                {
-                    Category_num: 5,
-                    Category_descr: 'Tesla Model 3'
-                }
-                
-            ],
             questionList: {
                 data: [
                     {
@@ -212,7 +190,11 @@ class Dashboard extends React.Component {
 
     // This will pull from categories array 
     generateCategoryList = () => {
-        const categoryListMarkup = this.state.categories.map((category, index) => {
+        if (typeof this.props.categories == 'undefined') {
+            return;
+        }
+        
+        const categoryListMarkup = this.props.categories.map((category, index) => {
             return (
                 <div 
                     className={'border p-3 pointer transparent-background '+((this.state.selectedCategory !== null && this.state.selectedCategory.Category_num === category.Category_num)?'selected': '')}
@@ -316,9 +298,9 @@ class Dashboard extends React.Component {
     generatePageNumbers = () =>  {
         const pageNumberArray = [...Array(this.state.questionAnswers.noOfPages).keys()];
         console.log('pageNumberArray', pageNumberArray);
-        const pageNumbersMarkup = pageNumberArray.map((pageNumber) => {
+        const pageNumbersMarkup = pageNumberArray.map((pageNumber, index) => {
             return (
-                <li className="page-item"><a onClick={(event) => this.changePageNumber(pageNumber+1)} className={'page-link '+((pageNumber+1 === this.state.currentQuestionAnswersPageNo)?'selected':'')} href="#">{pageNumber+1}</a></li>
+                <li className="page-item" key={index}><a onClick={(event) => this.changePageNumber(pageNumber+1)} className={'page-link '+((pageNumber+1 === this.state.currentQuestionAnswersPageNo)?'selected':'')} href="#">{pageNumber+1}</a></li>
             );
         });
 
@@ -328,9 +310,9 @@ class Dashboard extends React.Component {
     generateQuestionListPageNumbers = () =>  {
         const pageNumberArray = [...Array(this.state.questionList.noOfPages).keys()];
         console.log('pageNumberArray', pageNumberArray);
-        const pageNumbersMarkup = pageNumberArray.map((pageNumber) => {
+        const pageNumbersMarkup = pageNumberArray.map((pageNumber, index) => {
             return (
-                <li className="page-item"><a onClick={(event) => this.changeQuestionListPageNumber(pageNumber+1)} className={'page-link '+((pageNumber+1 === this.state.currentQuestionListPageNo)?'selected':'')} href="#">{pageNumber+1}</a></li>
+                <li className="page-item" key={index}><a onClick={(event) => this.changeQuestionListPageNumber(pageNumber+1)} className={'page-link '+((pageNumber+1 === this.state.currentQuestionListPageNo)?'selected':'')} href="#">{pageNumber+1}</a></li>
             );
         });
 
@@ -645,9 +627,14 @@ class Dashboard extends React.Component {
 
         return true;
     }
+
+    componentDidMount = () => {
+        this.props.getCategories();
+    }
     
 
     render() {
+        console.log('categories', this.props.categories);
         if (!this.props.loggedIn) {
           return <Redirect to='/Login' />
         }
@@ -678,10 +665,12 @@ class Dashboard extends React.Component {
 
 function mapState(state) {
     const { loggedIn } = state.authentication;
-    return { loggedIn };
+    const { categories } = state.category;
+    return { loggedIn, categories };
 }
 
 const actionCreators = {
+    getCategories: categoryActions.getCategories
 }
       
 export default connect(mapState, actionCreators)(Dashboard);
