@@ -41,14 +41,12 @@ function register(input) {
         userService.register(input)
             .then(
                 user => { 
-                    console.log('TEST');
                     dispatch(success(user));
                     dispatch(alertActions.success('Registration successful'));
                 },
                 error => {
-                    console.log('IT HAS FAILED');
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
+                    dispatch(failure(error.response.data.error));
+                    dispatch(alertActions.error(error.response.data.error));
                 }
             );
     };

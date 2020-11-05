@@ -25,6 +25,8 @@ class RegisterForm extends React.Component {
     console.log('object', object);
     this.setState({
       input: object
+    }, function(){
+      this.validate();
     });
   }
 
@@ -34,6 +36,8 @@ class RegisterForm extends React.Component {
     object.terms = !currentValue;
     this.setState({
       input: object
+    }, function() {
+      this.validate();
     });
   }
 

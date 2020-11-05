@@ -21,6 +21,42 @@ body {
   background-size: cover;
 }
 
+.category-bg-1 {
+  background-color: #516077;
+  background-image: url('Images/BMWi3.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.category-bg-2 {
+  background-color: #516077;
+  background-image: url('Images/chevy1.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.category-bg-3 {
+  background-color: #516077;
+  background-image: url('Images/Kia.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.category-bg-4 {
+  background-color: #516077;
+  background-image: url('Images/nissan.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.category-bg-5 {
+  background-color: #516077;
+  background-image: url('Images/ElectCar.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
 .Carphoto {
   background-repeat: no-repeat;
   width: 90%;
@@ -31,7 +67,7 @@ body {
 
 .absolute {
   position: absolute;
-  max-width: 240px;
+  max-width: 300px;
 }
 .form-container {
   background-color: rgba(255,255,255,0.8);
@@ -76,4 +112,15 @@ body {
 .modal-content {
   max-height: 800px;;
   overflow-y: scroll;
+}
+.break-word {
+  word-wrap: break-word;
+}
+
+
+@media only screen and (max-width: 650px) {
+  .absolute {
+    max-width: 240px;
+    font-size: 12px;
+  }
 }

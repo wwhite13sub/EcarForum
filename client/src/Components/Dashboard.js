@@ -70,14 +70,25 @@ class Dashboard extends React.Component {
             selectedQuestion: {},
 
             currentAnswerListPageNo: 1,
-            currentQuestionListPageNo: 1
+            currentQuestionListPageNo: 1,
+
+            //defined to show the chronological question numbers
+            questionNumberArray: [],
+            answerNumberArray: [],
+
+            selectedQuestionNumber: 1,
+
+            perPage: 5,
+            
+            bg: ''
         };
     }
 
     changeDetails = (type, category) => {
         this.setState({
             detailsType: type,
-            selectedCategory: category
+            selectedCategory: category,
+            bg: 'category-bg-'+category.Category_num
         });
 
         this.props.getQuestionList({
@@ -87,6 +98,30 @@ class Dashboard extends React.Component {
         });
 
         this.resetQuestionListPageNumber();
+        this.populateQuestionNumberArray(1);
+    }
+
+    populateQuestionNumberArray = (page) => {
+        const offset = (page - 1) * this.state.perPage;
+        let questionNumberArray = [];
+        for (let i=1; i<=this.state.perPage; i++) {
+            questionNumberArray.push(offset+i);
+        }
+        this.setState({
+            questionNumberArray: questionNumberArray
+        });
+    }
+
+
+    populateAnswerNumberArray = (page) => {
+        const offset = (page - 1) * this.state.perPage;
+        let answerNumberArray = [];
+        for (let i=1; i<=this.state.perPage; i++) {
+            answerNumberArray.push(offset+i);
+        }
+        this.setState({
+            answerNumberArray: answerNumberArray
+        });
     }
 
     // This will pull from categories array 
@@ -111,17 +146,20 @@ class Dashboard extends React.Component {
     }
 
    //These functions return true or false depending on "actions"
-    showQuestionDetailModal = (question) => {
+    showQuestionDetailModal = (question, questionNumber) => {
         console.log(question);
         this.setState({
             selectedQuestion: question,
-            questionDetailModalShow: true
+            questionDetailModalShow: true,
+            selectedQuestionNumber: questionNumber
         });
 
         this.props.getAnswerList({
             page: 1,
             Question_num: question.Question_num
         });
+
+        this.populateAnswerNumberArray(1);
     }
 
     closeQuestionDetailModal = () => {
@@ -169,13 +207,13 @@ class Dashboard extends React.Component {
             return (
                 <div className="row my-4" key={index}>
                     <div className="col-12 col-sm-8">
-                        <div>
-                            Question {question.Question_num} {moment(question.Question_Date_Time).format('MM/DD/YYYY HH:mm')} {question.Answer_num} answers
+                        <div class="font-weight-bold">
+                            Question {this.state.questionNumberArray[index]} {moment(question.Question_Date_Time).format('MM/DD/YYYY HH:mm')} {question.Answer_num} answers
                         </div>
-                        <div>{question.Question_descr}</div>
+                        <div class="break-word">{question.Question_descr}</div>
                     </div>
                     <div className="col-12 col-sm-2 mt-3 mt-sm-0">
-                        <button onClick={(event) => this.showQuestionDetailModal(question)} className="btn btn-success" data-toggle="modal" data-target="modalLong">
+                        <button onClick={(event) => this.showQuestionDetailModal(question, this.state.questionNumberArray[index])} className="btn btn-success" data-toggle="modal" data-target="modalLong">
                             View
                         </button>
                     </div>
@@ -197,7 +235,7 @@ class Dashboard extends React.Component {
             return (
                 <div className="pt-4" key={index}>
                     <div className="font-weight-bold">
-                        Answer #{answer.Answer_num}: from {answer.user_firstname} on {answer.Answer_Date_Time}
+                        Answer #{this.state.answerNumberArray[index]}: from {answer.user_firstname} on {moment(answer.Answer_Date_Time).format('MM/DD/YYYY HH:mm')}
                     </div>
                     <div>
                         {answer.Answer_descr}
@@ -252,6 +290,8 @@ class Dashboard extends React.Component {
             Question_num: this.state.selectedQuestion.Question_num
         });
 
+        this.populateAnswerNumberArray(page);
+
     }
 
     changeQuestionListPageNumber = (page) => {
@@ -265,6 +305,8 @@ class Dashboard extends React.Component {
             Category_num: this.state.selectedCategory.Category_num,
             user_ID: this.props.user.id
         });
+
+        this.populateQuestionNumberArray(page);
     }
 
     resetPageNumber = () => {
@@ -298,13 +340,16 @@ class Dashboard extends React.Component {
                         </div>
                         <div className="row border p-3">
                             <div className="col-4 font-weight-bold">
-                                <div>Category {this.state.selectedQuestion.Question_num}:  {this.state.selectedCategory.Category_descr}</div>
+                                <div>Category {this.state.selectedCategory.Category_num}:  {this.state.selectedCategory.Category_descr}</div>
                                 <div>Question submitted by: {this.state.selectedQuestion.user_firstname}</div>
                                 <div>On {moment(this.state.selectedQuestion.Question_Date_Time).format('MM/DD/YYYY HH:mm')} {this.state.selectedQuestion.Answer_num} Answers</div>  
                             </div>
                             <div className="col-8 font-weight-bold">
                                 <div>
-                                    Question #{this.state.selectedQuestion.Question_num}: {this.state.selectedQuestion.Question_descr}
+                                    <div>Question #{this.state.selectedQuestionNumber}: </div>
+                                    <div class="break-word">
+                                        {this.state.selectedQuestion.Question_descr}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -367,7 +412,7 @@ class Dashboard extends React.Component {
                         <div className="row mb-3">
                             <div className="col-12 pl-0">
                                 <h3>
-                                    Username, Answer Question
+                                    {this.props.user.username}, Answer Question
                                 </h3>
                             </div>
                         </div>
@@ -430,7 +475,7 @@ class Dashboard extends React.Component {
                         <div className="row mb-3">
                             <div className="col-12 pl-0">
                                 <h3>
-                                    Username, Enter your NEW question
+                                    {this.props.user.username}, Enter your NEW question
                                 </h3>
                             </div>
                         </div>
@@ -547,6 +592,14 @@ class Dashboard extends React.Component {
             return false;
         }
 
+        //validate that the questionis no longer than 200 chars
+        if (question.length < 10 || question.length > 200) {
+            this.setState({
+                newQuestionError: 'You need to submit a question between 10 to 200 words!'
+            });
+            return false;
+        }
+
         //validate that question is ending with ?
         const lastChar = question.substr(-1);
         if (lastChar !== '?') {
@@ -606,6 +659,14 @@ class Dashboard extends React.Component {
             return false;
         }
 
+        //validate that the answer is no longer than 200 chars
+        if (answer.length > 200) {
+            this.setState({
+                newAnswerError: 'You can not submit an answer of more than 200 words!'
+            });
+            return false;
+        }
+
         this.setState({
             newAnswerError: ''
         });
@@ -647,7 +708,7 @@ class Dashboard extends React.Component {
           return <Redirect to='/Login' />
         }
         return (
-            <div className="row dashborad-wrapper">
+            <div className={"row dashborad-wrapper "+this.state.bg}>
                 <div className="col-12 col-sm-3">
                     {this.generateCategoryList()}
                 </div>

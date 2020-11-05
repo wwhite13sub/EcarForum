@@ -16,13 +16,17 @@ class App extends Component {
   }
 
   render() {
+    setTimeout(() => {
+      this.props.clearAlerts();
+    }, 10000);//number of seconds given in mili secs
     const { alert } = this.props;
     return (
       <div className="container-fluid">
         <div className="row">
             <div className="col-12">
-              {alert.message &&
-                  <div className={`alert ${alert.type}`}>{alert.message}</div>
+              {
+                alert.message &&
+                <div className={`alert ${alert.type}`}>{alert.message}</div>
               }
               <Router>
                   <NavigationBar />

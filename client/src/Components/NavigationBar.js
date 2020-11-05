@@ -8,7 +8,7 @@ import { userActions } from '../redux/actions';
 function NavButtons(props) {
   if (props.loggedIn) {
     return (
-      <Nav className="nav navbar-nav right">
+      <Nav className="nav navbar-nav right ml-auto">
         <form method="post" className="form-inline my-2 my-lg-0">
           <div className="text-white mr-3">Welcome, {props.user.username}</div>
           <button type="button" className="btn btn-primary my-2 my-sm-0" onClick={props.logout}>
@@ -32,6 +32,11 @@ function NavButtons(props) {
             Login
           </Link>
         </button>
+        <button type="button" className="btn btn-primary my-2 my-sm-0">
+          <Link to="/Dashboard">
+            Dashboard
+          </Link>
+        </button>
       </form>
     </Nav>
   )
@@ -48,7 +53,7 @@ class NavigationBar extends React.Component {
         <div className="navbar-brand">Electric Car Forum</div>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id=" responsive-navbar-nav">
-          <Nav className="navbar-nav mr-auto mt-2 mt-lg-0">
+          <Nav className="navbar-nav ml-auto mt-2 mt-lg-0">
               
             <NavButtons 
               loggedIn={this.props.loggedIn} 
