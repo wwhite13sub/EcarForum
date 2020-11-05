@@ -47,3 +47,36 @@ exports.newQuestion = async function(req,res){
     }
   });
 }
+
+
+exports.getQuestionList = async function(req,res){
+  console.log(req.body);
+  const page = req.body.page;
+  const Category_num = req.body.Category_num;
+  const user_ID = req.body.user_ID;
+
+  const perPage = 5;
+  const offset = (page - 1) * perPage;
+
+  db.query('SELECT * FROM Question_TBL WHERE Category_num='+Category_num+' AND user_ID='+user_ID+' ORDER BY Question_Date_Time DESC  LIMIT '+perPage+' OFFSET '+offset, async function (error, results, fields) {
+    if (error) {
+      res.send({
+        "code":400,
+        "failed":"error ocurred",
+        "message": error
+      })
+    }else{
+      let questionList = {};
+      questionList.data = results;
+
+      db.query('SELECT COUNT(*) AS count FROM Question_TBL WHERE Category_num='+Category_num+' AND user_ID='+user_ID+' ORDER BY Question_Date_Time DESC', async function (error, results, fields) {
+          questionList.noOfPages = Math.ceil(results[0]['count'] / perPage);
+          res.send({
+            "code":200,
+            "success":"categories fetch successful",
+            "questionList": questionList
+          });
+      });
+    }
+  });
+}
