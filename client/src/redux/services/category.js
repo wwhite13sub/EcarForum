@@ -3,7 +3,9 @@ import axios from 'axios';
 export const categoryService = {
     getCategories,
     newQuestion,
-    getQuestionList
+    getQuestionList,
+    newAnswer,
+    getAnswerList
 };
 
 function getCategories() {
@@ -32,3 +34,22 @@ function getQuestionList(data) {
       return Promise.reject(error);
     });
 }
+
+function newAnswer(data) {
+    return axios.post(`http://localhost:4000/api/new-answer`, data).then((response) => {
+        return response;
+    })
+    .catch((error) => {
+      return Promise.reject(error);
+    });
+}
+
+function getAnswerList(data) {
+    return axios.post(`http://localhost:4000/api/get-answer-list`, data).then((response) => {
+        return response;
+    })
+    .catch((error) => {
+      return Promise.reject(error);
+    });
+}
+

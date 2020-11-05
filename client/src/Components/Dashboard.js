@@ -40,28 +40,7 @@ function Details(props) {
 
                 {props.loadQuestionList()}
 
-
-                <div className="row mt-3">
-                    <div className="col-12 d-flex justify-content-center">
-                        <nav>
-                            <ul className="pagination">
-                                <li className="page-item">
-                                    <a className="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span className="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                                {props.generateQuestionListPageNumbers()}
-                                <li className="page-item">
-                                    <a className="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span className="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
+                {props.loadQuestionListPagination()}
             </div>
         )
     }
@@ -90,37 +69,7 @@ class Dashboard extends React.Component {
 
             selectedQuestion: {},
 
-            questionAnswers: {
-                data: [
-                    {
-                        Answer_num: 1,
-                        user: {
-                            user_firstname: 'Wanda 1'
-                        },
-                        Answer_Date_Time: '7/3/2020 14:00:01',
-                        Answer_descr: 'Cost is $5000, go ahead buy now or loose it. Cost is $5000, go ahead buy now or loose it. Cost is $5000, go ahead buy now or loose it. Cost is $5000, go ahead buy now or loose it. Cost is $5000, go ahead buy now or loose it.'
-                    },
-                    {
-                        Answer_num: 2,
-                        user: {
-                            user_firstname: 'Wanda 2'
-                        },
-                        Answer_Date_Time: '7/2/2020 14:00:01',
-                        Answer_descr: 'Cost is $5000, go ahead buy now or loose it. Cost is $5000, go ahead buy now or loose it. Cost is $5000, go ahead buy now or loose it. Cost is $5000, go ahead buy now or loose it. Cost is $5000, go ahead buy now or loose it.'
-                    },
-                    {
-                        Answer_num: 3,
-                        user: {
-                            user_firstname: 'Wanda 3'
-                        },
-                        Answer_Date_Time: '7/1/2020 14:00:01',
-                        Answer_descr: 'Cost is $5000, go ahead buy now or loose it. Cost is $5000, go ahead buy now or loose it. Cost is $5000, go ahead buy now or loose it. Cost is $5000, go ahead buy now or loose it. Cost is $5000, go ahead buy now or loose it.'
-                    }
-                ],
-                noOfPages: 4
-            },
-
-            currentQuestionAnswersPageNo: 1,
+            currentAnswerListPageNo: 1,
             currentQuestionListPageNo: 1
         };
     }
@@ -167,7 +116,12 @@ class Dashboard extends React.Component {
         this.setState({
             selectedQuestion: question,
             questionDetailModalShow: true
-        })
+        });
+
+        this.props.getAnswerList({
+            page: 1,
+            Question_num: question.Question_num
+        });
     }
 
     closeQuestionDetailModal = () => {
@@ -206,6 +160,7 @@ class Dashboard extends React.Component {
 
     //this will loop new questions list 
     loadQuestionList = () => {
+        console.log('It is coming here as well');
         if (typeof this.props.questionList === 'undefined') {
             return;
         }
@@ -234,11 +189,15 @@ class Dashboard extends React.Component {
     }
 
     populateAnswers = () => {
-        const answersMarkup = this.state.questionAnswers.data.map((answer, index) => {
+        if (typeof this.props.answerList === 'undefined') {
+            return;
+        }        
+        
+        const answersMarkup = this.props.answerList.data.map((answer, index) => {
             return (
                 <div className="pt-4" key={index}>
                     <div className="font-weight-bold">
-                        Answer #{answer.Answer_num}: from {answer.user.user_firstname} on {answer.Answer_Date_Time}
+                        Answer #{answer.Answer_num}: from {answer.user_firstname} on {answer.Answer_Date_Time}
                     </div>
                     <div>
                         {answer.Answer_descr}
@@ -252,11 +211,14 @@ class Dashboard extends React.Component {
 
 
     generatePageNumbers = () =>  {
-        const pageNumberArray = [...Array(this.state.questionAnswers.noOfPages).keys()];
+        if (typeof this.props.answerList === 'undefined') {
+            return;
+        }
+        const pageNumberArray = [...Array(this.props.answerList.noOfPages).keys()];
         console.log('pageNumberArray', pageNumberArray);
         const pageNumbersMarkup = pageNumberArray.map((pageNumber, index) => {
             return (
-                <li className="page-item" key={index}><a onClick={(event) => this.changePageNumber(pageNumber+1)} className={'page-link '+((pageNumber+1 === this.state.currentQuestionAnswersPageNo)?'selected':'')} href="#">{pageNumber+1}</a></li>
+                <li className="page-item" key={index}><a onClick={(event) => this.changePageNumber(pageNumber+1)} className={'page-link '+((pageNumber+1 === this.state.currentAnswerListPageNo)?'selected':'')} href="#">{pageNumber+1}</a></li>
             );
         });
 
@@ -281,8 +243,15 @@ class Dashboard extends React.Component {
 
     changePageNumber = (page) => {
         this.setState({
-            currentQuestionAnswersPageNo: page
-        })
+            currentAnswerListPageNo: page
+        });
+
+        //fetch new answer list
+        this.props.getAnswerList({
+            page: page,
+            Question_num: this.state.selectedQuestion.Question_num
+        });
+
     }
 
     changeQuestionListPageNumber = (page) => {
@@ -295,12 +264,12 @@ class Dashboard extends React.Component {
             page: page,
             Category_num: this.state.selectedCategory.Category_num,
             user_ID: this.props.user.id
-        })
+        });
     }
 
     resetPageNumber = () => {
         this.setState({
-            currentQuestionAnswersPageNo: 1
+            currentAnswerListPageNo: 1
         })
     }
 
@@ -330,7 +299,7 @@ class Dashboard extends React.Component {
                         <div className="row border p-3">
                             <div className="col-4 font-weight-bold">
                                 <div>Category {this.state.selectedQuestion.Question_num}:  {this.state.selectedCategory.Category_descr}</div>
-                                <div>Question submitted by: {this.state.selectedQuestion.user.user_firstname}</div>
+                                <div>Question submitted by: {this.state.selectedQuestion.user_firstname}</div>
                                 <div>On {moment(this.state.selectedQuestion.Question_Date_Time).format('MM/DD/YYYY HH:mm')} {this.state.selectedQuestion.Answer_num} Answers</div>  
                             </div>
                             <div className="col-8 font-weight-bold">
@@ -344,7 +313,7 @@ class Dashboard extends React.Component {
                             <div className="col-12">
                                 <div className="row">
                                     <div className="col-12 text-right">
-                                        <button onClick={this.showAnswerModal} className="btn selected">
+                                        <button onClick={(event) => this.showAnswerModal(this.state.selectedQuestion)} className="btn selected">
                                             Answer
                                         </button>
                                     </div>
@@ -405,8 +374,8 @@ class Dashboard extends React.Component {
                         <div className="row border p-3">
                             <div className="col-4 font-weight-bold">
                                 <div>Category {this.state.selectedQuestion.Question_num}:  {this.state.selectedCategory.Category_descr}</div>
-                                <div>Question submitted by: {this.state.selectedQuestion.user.user_firstname}</div>
-                                <div>On {this.state.selectedQuestion.Question_Date_Time} {this.state.selectedQuestion.Answer_num} Answers</div>  
+                                <div>Question submitted by: {this.state.selectedQuestion.user_firstname}</div>
+                                <div>On {moment(this.state.selectedQuestion.Question_Date_Time).format('MM/DD/YYYY HH:mm')} {this.state.selectedQuestion.Answer_num} Answers</div>  
                             </div>
                             <div className="col-8 font-weight-bold">
                                 <div>
@@ -508,6 +477,39 @@ class Dashboard extends React.Component {
     }
 
 
+    loadQuestionListPagination = () => {
+        console.log('IT IS COMING HERE');
+        if (typeof this.props.questionList === 'undefined' || !this.props.questionList.data.length) {
+            return;
+        }
+
+        return (
+            <div className="row mt-3">
+                <div className="col-12 d-flex justify-content-center">
+                    <nav>
+                        <ul className="pagination">
+                            <li className="page-item">
+                                <a className="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span className="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            {this.generateQuestionListPageNumbers()}
+                            <li className="page-item">
+                                <a className="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span className="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        )
+    }
+
+
     newQuestionHandler = (event) => {
         this.setState({
             newQuestion: event.target.value
@@ -529,9 +531,9 @@ class Dashboard extends React.Component {
 
         //make the question empty and close the question modal
         this.setState({
-            newQuestion: '',
-            newQuestionModalShow: false
+            newQuestion: ''
         });
+        this.closeNewQuestionModal();
     }
 
     validateNewQuestion = () => {
@@ -577,11 +579,20 @@ class Dashboard extends React.Component {
             return;
         }
 
-        //process the answer
+        //process the question
+        this.props.newAnswer({
+            Category_num: this.state.selectedCategory.Category_num,
+            Question_num: this.state.selectedQuestion.Question_num,
+            Answer_descr: this.state.newAnswer,
+            user_ID: this.props.user.id
+        });
+
+
+        //make the question empty and close the question modal
         this.setState({
             newAnswer: ''
         });
-        alert('Your Answer has been subnitted');
+        this.closeAnswerModal();
     }
 
     validateNewAnswer = () => {
@@ -615,6 +626,18 @@ class Dashboard extends React.Component {
                 user_ID: this.props.user.id
             });
         }
+
+        if (this.props.newAnswerSaved) {
+            this.props.getQuestionList({
+                page: 1,
+                Category_num: this.state.selectedCategory.Category_num,
+                user_ID: this.props.user.id
+            });
+            this.props.getAnswerList({
+                page: 1,
+                Question_num: this.state.selectedQuestion.Question_num,
+            });
+        }
     }
     
 
@@ -634,7 +657,7 @@ class Dashboard extends React.Component {
                         selectedCategory={this.state.selectedCategory}
                         loadQuestionList={this.loadQuestionList}
                         showNewQuestionModal={this.showNewQuestionModal}
-                        generateQuestionListPageNumbers={this.generateQuestionListPageNumbers}
+                        loadQuestionListPagination={this.loadQuestionListPagination}
                     />
                 </div>
 
@@ -650,14 +673,16 @@ class Dashboard extends React.Component {
 
 function mapState(state) {
     const { loggedIn, user } = state.authentication;
-    const { categories, newQuestionSaved, questionList } = state.category;
-    return { loggedIn, categories, user, newQuestionSaved, questionList };
+    const { categories, newQuestionSaved, newAnswerSaved, questionList, answerList } = state.category;
+    return { loggedIn, categories, user, newQuestionSaved, newAnswerSaved, questionList, answerList };
 }
 
 const actionCreators = {
     getCategories: categoryActions.getCategories,
     newQuestion: categoryActions.newQuestion,
-    getQuestionList: categoryActions.getQuestionList
+    getQuestionList: categoryActions.getQuestionList,
+    newAnswer: categoryActions.newAnswer,
+    getAnswerList: categoryActions.getAnswerList
 }
       
 export default connect(mapState, actionCreators)(Dashboard);

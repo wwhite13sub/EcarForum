@@ -2,7 +2,16 @@ import { categoryConstants } from '../constants';
 
 const initialState = {
   categories: [],
-  newQuestionSaved: false
+  newQuestionSaved: false,
+  newAnswerSaved: false,
+  questionList: {
+    data: [],
+    noOfPages: 0
+  },
+  answerList: {
+    data: [],
+    noOfPages: 0
+  }
 }
 
 export function category(state = initialState, action) {
@@ -18,8 +27,18 @@ export function category(state = initialState, action) {
       return {};
 
     case categoryConstants.GET_QUESTION_LIST_SUCCESS:
-      return {...state, newQuestionSaved: false, questionList: action.questionList};
+      return {...state, newQuestionSaved: false, newAnswerSaved: false, questionList: action.questionList};
     case categoryConstants.GET_QUESTION_LIST_FAILURE:
+      return {};
+
+    case categoryConstants.SAVE_ANSWER_SUCCESS:
+      return {...state, newAnswerSaved: true};
+    case categoryConstants.SAVE_ANSWER_FAILURE:
+      return {};
+
+    case categoryConstants.GET_ANSWER_LIST_SUCCESS:
+      return {...state, answerList: action.answerList};
+    case categoryConstants.GET_ANSWER_LIST_FAILURE:
       return {};
 
     default:
