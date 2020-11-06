@@ -376,19 +376,7 @@ class Dashboard extends React.Component {
                             <div className="col-12 d-flex justify-content-center">
                                 <nav>
                                     <ul className="pagination">
-                                        <li className="page-item">
-                                            <a className="page-link" href="#" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                                <span className="sr-only">Previous</span>
-                                            </a>
-                                        </li>
                                         {this.generatePageNumbers()}
-                                        <li className="page-item">
-                                            <a className="page-link" href="#" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                                <span className="sr-only">Next</span>
-                                            </a>
-                                        </li>
                                     </ul>
                                 </nav>
                             </div>
@@ -533,19 +521,7 @@ class Dashboard extends React.Component {
                 <div className="col-12 d-flex justify-content-center">
                     <nav>
                         <ul className="pagination">
-                            <li className="page-item">
-                                <a className="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span className="sr-only">Previous</span>
-                                </a>
-                            </li>
                             {this.generateQuestionListPageNumbers()}
-                            <li className="page-item">
-                                <a className="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span className="sr-only">Next</span>
-                                </a>
-                            </li>
                         </ul>
                     </nav>
                 </div>
