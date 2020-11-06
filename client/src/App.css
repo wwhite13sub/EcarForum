@@ -15,10 +15,12 @@
 }
 
 body {
-  background-color: #516077;
-  background-image: url('Images/ElectCar.jpg');
-  background-repeat: no-repeat;
+  background: linear-gradient(to bottom, #55678b 0%, #dfd6a3 100%);
+  /* background-image: url('Images/ElectCar.jpg'); */
+  /* background-repeat: no-repeat; */
   background-size: cover;
+  height: 100%;
+  width: 100%;
 }
 
 .category-bg-1 {
@@ -27,13 +29,20 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  height: 100%;
+  width: 100%;
+  margin-left: .5%;
 }
 .category-bg-2 {
   background-color: #516077;
-  background-image: url('Images/chevy1.jpg');
+  background-image: url('Images/Chevy.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  height: 100%;
+  width: 100%;
+  margin-left: .5%;
+  margin-top: 5%;
 }
 .category-bg-3 {
   background-color: #516077;
@@ -41,6 +50,9 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  height: 100%;
+  width: 100%;
+  margin-left: .3%;
 }
 .category-bg-4 {
   background-color: #516077;
@@ -48,6 +60,9 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  height: 100%;
+  width: 100%;
+  margin-left: .3%;
 }
 .category-bg-5 {
   background-color: #516077;
@@ -55,6 +70,9 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  height: 100%;
+  width: 100%;
+  margin-left: .3%;
 }
 
 .Carphoto {
@@ -81,7 +99,7 @@ body {
 }
 
 .transparent-background {
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba(255,255,255,0.7);
 }
 
 .dashborad-wrapper {
@@ -90,7 +108,7 @@ body {
 
 .selected {
   background-color: rgba(128,104,189,0.8);
-  /*color: #FFFFFF;*/
+  color: #FFFFFF;
 }
 
 
