@@ -13,7 +13,8 @@ class RegisterForm extends React.Component {
         confirm_password: '',
         terms: false
       },
-      errors: {}
+      errors: {},
+      formSubmitted: false
     };
   }
 
@@ -22,11 +23,12 @@ class RegisterForm extends React.Component {
     const value = event.target.value;
     const object = { ...this.state.input };
     object[name] = value;
-    console.log('object', object);
     this.setState({
       input: object
     }, function(){
-      this.validate();
+      if (this.state.formSubmitted) {
+        this.validate();
+      }
     });
   }
 
@@ -37,12 +39,18 @@ class RegisterForm extends React.Component {
     this.setState({
       input: object
     }, function() {
-      this.validate();
+      if (this.state.formSubmitted) {
+        this.validate();
+      }
     });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
+
+    this.setState({
+      formSubmitted: true
+    })
 
     //validation
     if (!this.validate()) {
@@ -65,8 +73,7 @@ class RegisterForm extends React.Component {
     if ((typeof input["username"] === "undefined") || (!input["username"])) {
       isValid = false;
       usernameError += "Please enter your username.";
-    }
-    if (input["username"].length < 8) {
+    } else if (input["username"].length < 8) {
       isValid = false;
       usernameError += "Must be 8 characters.";
     }
@@ -77,10 +84,12 @@ class RegisterForm extends React.Component {
     if ((typeof input["password"] === "undefined") || !input["password"]) {
       isValid = false;
       passwordError += "Please enter your password.";
-    }
-    if (input["password"].length < 8) {
+    } else if (input["password"].length < 8) {
       isValid = false;
       passwordError += "Must contain at least 8 characters and one number.";
+    } else if (!(/\d/.test(input["password"]))) {
+      isValid = false;
+      passwordError += "Must contain one number.";
     }
     errors['password'] = passwordError;
 
@@ -89,8 +98,7 @@ class RegisterForm extends React.Component {
     if ((typeof input["confirm_password"] === "undefined") || !input["confirm_password"]) {
       isValid = false;
       confirmPasswordError += "Please enter your confirm password.";
-    }
-    if (input["password"] !== input["confirm_password"]) {
+    } else if (input["password"] !== input["confirm_password"]) {
       isValid = false;
       confirmPasswordError += "Passwords don't match.";
     }
@@ -111,6 +119,7 @@ class RegisterForm extends React.Component {
     return isValid;
   }
   render() {
+    // this piece of code actually redirects the user to login page after the registeration
     if (this.props.registrationSuccess) {
       return <Redirect to='/Login' />
     }

@@ -5,7 +5,8 @@ import { alertActions } from './';
 export const userActions = {
     login,
     logout,
-    register
+    register,
+    loginRedirectDone
 };
 
 function login(username, password) {
@@ -19,7 +20,7 @@ function login(username, password) {
                 },
                 error => {
                     dispatch(failure(error.toString()));
-                    dispatch(alertActions.error('Wrong credentials, please try again.'));
+                    dispatch(alertActions.error('Wrong username or password.'));
                 }
             );
     };
@@ -54,4 +55,8 @@ function register(input) {
     function request(user) { return { type: userConstants.REGISTER_REQUEST, user } }
     function success(user) { return { type: userConstants.REGISTER_SUCCESS, user } }
     function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
+}
+
+function loginRedirectDone() {
+    return { type:  userConstants.LOGIN_REDIRECT_DONE }
 }

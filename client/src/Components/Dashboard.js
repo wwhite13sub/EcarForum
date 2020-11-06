@@ -10,7 +10,7 @@ function Details(props) {
     switch(props.type) {
     case 'static':
         return (
-            <div className="text-center">
+            <div className="text-center mt-3 font-weight-bold">
                 Select a category to view its questions.
             </div>
         )
@@ -147,7 +147,6 @@ class Dashboard extends React.Component {
 
    //These functions return true or false depending on "actions"
     showQuestionDetailModal = (question, questionNumber) => {
-        console.log(question);
         this.setState({
             selectedQuestion: question,
             questionDetailModalShow: true,
@@ -198,7 +197,6 @@ class Dashboard extends React.Component {
 
     //this will loop new questions list 
     loadQuestionList = () => {
-        console.log('It is coming here as well');
         if (typeof this.props.questionList === 'undefined') {
             return;
         }
@@ -207,10 +205,10 @@ class Dashboard extends React.Component {
             return (
                 <div className="row my-4" key={index}>
                     <div className="col-12 col-sm-8">
-                        <div class="font-weight-bold">
-                            Question {this.state.questionNumberArray[index]} {moment(question.Question_Date_Time).format('MM/DD/YYYY HH:mm')} {question.Answer_num} answers
+                        <div className="font-weight-bold">
+                            Question {question.Question_num} {moment(question.Question_Date_Time).format('MM/DD/YYYY HH:mm')} {question.Answer_num} answers
                         </div>
-                        <div class="break-word">{question.Question_descr}</div>
+                        <div className="break-word">{question.Question_descr}</div>
                     </div>
                     <div className="col-12 col-sm-2 mt-3 mt-sm-0">
                         <button onClick={(event) => this.showQuestionDetailModal(question, this.state.questionNumberArray[index])} className="btn btn-success" data-toggle="modal" data-target="modalLong">
@@ -235,7 +233,7 @@ class Dashboard extends React.Component {
             return (
                 <div className="pt-4" key={index}>
                     <div className="font-weight-bold">
-                        Answer #{this.state.answerNumberArray[index]}: from {answer.user_firstname} on {moment(answer.Answer_Date_Time).format('MM/DD/YYYY HH:mm')}
+                        Answer #{answer.Answer_num}: from {answer.user_firstname} on {moment(answer.Answer_Date_Time).format('MM/DD/YYYY HH:mm')}
                     </div>
                     <div>
                         {answer.Answer_descr}
@@ -253,7 +251,6 @@ class Dashboard extends React.Component {
             return;
         }
         const pageNumberArray = [...Array(this.props.answerList.noOfPages).keys()];
-        console.log('pageNumberArray', pageNumberArray);
         const pageNumbersMarkup = pageNumberArray.map((pageNumber, index) => {
             return (
                 <li className="page-item" key={index}><a onClick={(event) => this.changePageNumber(pageNumber+1)} className={'page-link '+((pageNumber+1 === this.state.currentAnswerListPageNo)?'selected':'')} href="#">{pageNumber+1}</a></li>
@@ -269,10 +266,11 @@ class Dashboard extends React.Component {
         }
 
         const pageNumberArray = [...Array(this.props.questionList.noOfPages).keys()];
-        console.log('pageNumberArray', pageNumberArray);
         const pageNumbersMarkup = pageNumberArray.map((pageNumber, index) => {
             return (
-                <li className="page-item" key={index}><a onClick={(event) => this.changeQuestionListPageNumber(pageNumber+1)} className={'page-link '+((pageNumber+1 === this.state.currentQuestionListPageNo)?'selected':'')} href="#">{pageNumber+1}</a></li>
+                <li className="page-item" key={index}>
+                    <a onClick={(event) => this.changeQuestionListPageNumber(pageNumber+1)} className={'page-link '+((pageNumber+1 === this.state.currentQuestionListPageNo)?'selected':'')} href="#">{pageNumber+1}</a>
+                </li>
             );
         });
 
@@ -346,8 +344,8 @@ class Dashboard extends React.Component {
                             </div>
                             <div className="col-8 font-weight-bold">
                                 <div>
-                                    <div>Question #{this.state.selectedQuestionNumber}: </div>
-                                    <div class="break-word">
+                                    <div>Question #{this.state.selectedQuestion.Question_num}: </div>
+                                    <div className="break-word">
                                         {this.state.selectedQuestion.Question_descr}
                                     </div>
                                 </div>
@@ -511,7 +509,6 @@ class Dashboard extends React.Component {
 
 
     loadQuestionListPagination = () => {
-        console.log('IT IS COMING HERE');
         if (typeof this.props.questionList === 'undefined' || !this.props.questionList.data.length) {
             return;
         }
@@ -552,7 +549,8 @@ class Dashboard extends React.Component {
 
         //make the question empty and close the question modal
         this.setState({
-            newQuestion: ''
+            newQuestion: '',
+            currentQuestionListPageNo: 1
         });
         this.closeNewQuestionModal();
     }
@@ -618,8 +616,11 @@ class Dashboard extends React.Component {
 
 
         //make the question empty and close the question modal
+        let selectedQuestion = this.state.selectedQuestion;
+        selectedQuestion.Answer_num = selectedQuestion.Answer_num + 1;
         this.setState({
-            newAnswer: ''
+            newAnswer: '',
+            selectedQuestion: selectedQuestion
         });
         this.closeAnswerModal();
     }
@@ -679,7 +680,6 @@ class Dashboard extends React.Component {
     
 
     render() {
-        console.log('categories', this.props.categories);
         if (!this.props.loggedIn) {
           return <Redirect to='/Login' />
         }
@@ -710,8 +710,8 @@ class Dashboard extends React.Component {
 
 function mapState(state) {
     const { loggedIn, user } = state.authentication;
-    const { categories, newQuestionSaved, newAnswerSaved, questionList, answerList } = state.category;
-    return { loggedIn, categories, user, newQuestionSaved, newAnswerSaved, questionList, answerList };
+    const { categories, newQuestionSaved, newAnswerSaved, questionList, answerList, numberOfAnswers } = state.category;
+    return { loggedIn, categories, user, newQuestionSaved, newAnswerSaved, questionList, answerList, numberOfAnswers };
 }
 
 const actionCreators = {

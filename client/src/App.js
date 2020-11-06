@@ -15,16 +15,23 @@ class App extends Component {
       super(props);
   }
 
+  componentDidMount = () => {
+    const { alert } = this.props;
+    if (alert.type === 'alert-success') {
+      setTimeout(() => {
+        this.props.clearAlerts();
+      }, 10000);//number of seconds given in mili secs
+    }
+  }
+
   render() {
-    setTimeout(() => {
-      this.props.clearAlerts();
-    }, 10000);//number of seconds given in mili secs
     const { alert } = this.props;
     return (
       <div className="container-fluid">
         <div className="row">
             <div className="col-12">
               {
+                alert.type === 'alert-success' &&
                 alert.message &&
                 <div className={`alert ${alert.type}`}>{alert.message}</div>
               }
@@ -50,7 +57,7 @@ function mapState(state) {
 }
 
 const actionCreators = {
-    clearAlerts: alertActions.clear
+  clearAlerts: alertActions.clear
 };
 
 export default connect(mapState, actionCreators)(App);

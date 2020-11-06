@@ -65,7 +65,7 @@ function newAnswer(data) {
         categoryService.newAnswer(data)
             .then(
                 res => { 
-                    dispatch(success());
+                    dispatch(success(res.data.numberOfAnswers));
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -73,7 +73,7 @@ function newAnswer(data) {
             );
     };
 
-    function success(categories) { return { type: categoryConstants.SAVE_ANSWER_SUCCESS, categories } }
+    function success(numberOfAnswers) { return { type: categoryConstants.SAVE_ANSWER_SUCCESS, numberOfAnswers } }
     function failure(error) { return { type: categoryConstants.SAVE_ANSWER_FAILURE, error } }
 }
 

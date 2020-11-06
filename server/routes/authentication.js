@@ -30,10 +30,9 @@ exports.login = async function(req,res){
           });
         }
         else{
-          res.send({
-               "code":204,
-               "success":"Username and password does not match"
-          })
+          res.status(401).json({
+            error: new Error('Invalid request!')
+          });
         }
       }
       else{

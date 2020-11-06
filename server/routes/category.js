@@ -121,10 +121,15 @@ exports.newAnswer = async function(req,res){
         "message": error
       })
     }else{
-      res.send({
-        "code":200,
-        "success":"Answer has been created successfully"
+      db.query('SELECT COUNT(*) AS count FROM Answer_TBL WHERE Question_num='+Question_num, async function (error, results, fields) {
+        const numberOfAnswers = results[0]['count'];
+        res.send({
+          "code":200,
+          "success":"Answer has been created successfully",
+          "numberOfAnswers": numberOfAnswers
+        });
       });
+  
     }
   });
 }
@@ -145,7 +150,7 @@ exports.getAnswerList = async function(req,res){
     }else{
       let answerList = {};
       answerList.data = results;
-      db.query('SELECT COUNT(*) AS count FROM Answer_TBL WHERE Question_num='+Question_num+' ORDER BY Answer_Date_Time DESC', async function (error, results, fields) {
+      db.query('SELECT COUNT(*) AS count FROM Answer_TBL WHERE Question_num='+Question_num, async function (error, results, fields) {
         answerList.noOfPages = Math.ceil(results[0]['count'] / perPage);
         res.send({
           "code":200,

@@ -32,11 +32,6 @@ function NavButtons(props) {
             Login
           </Link>
         </button>
-        <button type="button" className="btn btn-primary my-2 my-sm-0">
-          <Link to="/Dashboard">
-            Dashboard
-          </Link>
-        </button>
       </form>
     </Nav>
   )
@@ -65,15 +60,6 @@ class NavigationBar extends React.Component {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-
-      //     <ul className="nav navbar-nav navbar-right">
-      //       <form method="post">
-      //       <button type="submit">Sign Up</button>
-      //       <li><a href="{foo}"><span className="glyphicon glyphicon-log-in"></span> Login</a></li>
-      //       </form>
-      //     </ul>
-      //   </div>
-      // </nav>
     );
   };
 }

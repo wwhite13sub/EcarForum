@@ -11,7 +11,8 @@ const initialState = {
   answerList: {
     data: [],
     noOfPages: 0
-  }
+  },
+  numberOfAnswers: 0
 }
 
 export function category(state = initialState, action) {
@@ -32,7 +33,7 @@ export function category(state = initialState, action) {
       return {};
 
     case categoryConstants.SAVE_ANSWER_SUCCESS:
-      return {...state, newAnswerSaved: true};
+      return {...state, newAnswerSaved: true, numberOfAnswers: action.numberOfAnswers};
     case categoryConstants.SAVE_ANSWER_FAILURE:
       return {};
 
