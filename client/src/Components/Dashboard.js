@@ -566,19 +566,19 @@ class Dashboard extends React.Component {
             return false;
         }
 
-        //validate that the questionis no longer than 200 chars
-        if (question.length < 10 || question.length > 200) {
-            this.setState({
-                newQuestionError: 'You need to submit a question between 10 to 200 words!'
-            });
-            return false;
-        }
-
         //validate that question is ending with ?
         const lastChar = question.substr(-1);
         if (lastChar !== '?') {
             this.setState({
                 newQuestionError: 'You need to end your question with a "?"'
+            });
+            return false;
+        }
+
+        //validate that the questionis no longer than 200 chars
+        if (question.length < 10 || question.length > 200) {
+            this.setState({
+                newQuestionError: 'You need to submit a question between 9 to 200 words!'
             });
             return false;
         }
