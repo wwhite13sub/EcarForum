@@ -37,13 +37,13 @@ class App extends Component {
               }
               <Router>
                   <NavigationBar />
-                  {/* this fuction if you load just the domain name (/) will redirect to registration */}
-                  <Route exact path="/" component={RegisterForm} />
+                  {/* this fuction if you load just the domain name (/) will redirect to Login */}
+                  <Route exact path="/" component={LoginForm} />
                   <Route path="/Register" component={ RegisterForm }/>
                   <Route path="/Login" component={LoginForm} />
                   <Route path="/Dashboard" component={Dashboard} />
-                  {/* this fuction if you load anything but the defined route will redirect to registration */}
-                  <Redirect from="*" to="/Register" />
+                  {/* this fuction if you load anything but the defined route will redirect to Login */}
+                  <Redirect from="*" to="/Login" />
               </Router>
             </div>
         </div>
