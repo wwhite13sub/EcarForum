@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require("path")
 
 //load .env
 require('dotenv').config();
@@ -42,6 +43,14 @@ router.post('/get-question-list', auth, category.getQuestionList);
 router.post('/new-answer', auth, category.newAnswer);
 router.post('/get-answer-list', auth, category.getAnswerList);
 app.use('/api', router);
+
+if (process.env.NODE_ENV === "production") {
+    const buildDir = path.normalize(`${__dirname}/../client/build`)
+    app.use("/", express.static(buildDir))
+    app.get("*", (req, res) => {
+        res.sendFile(`${buildDir}/index.html`)
+    })
+}
 
 const port = process.env.PORT || 4000;
 app.listen(port, function () {
