@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { authHeader } from '../helpers';
+import { authHeader, APP_HOST } from '../helpers';
 
 export const categoryService = {
     getCategories,
@@ -14,7 +14,7 @@ function getCategories() {
         headers: authHeader()
     };
     
-    return axios.get(`http://localhost:4000/api/get-categories`, options).then((categoriesResponse) => {
+    return axios.get(`${APP_HOST}api/get-categories`, options).then((categoriesResponse) => {
         return categoriesResponse;
     })
     .catch((error) => {
@@ -27,7 +27,7 @@ function newQuestion(data) {
         headers: authHeader()
     };
 
-    return axios.post(`http://localhost:4000/api/new-question`, data, options).then((response) => {
+    return axios.post(`${APP_HOST}api/new-question`, data, options).then((response) => {
         return response;
     })
     .catch((error) => {
@@ -40,7 +40,7 @@ function getQuestionList(data) {
         headers: authHeader()
     };
 
-    return axios.post(`http://localhost:4000/api/get-question-list`, data, options).then((response) => {
+    return axios.post(`${APP_HOST}api/get-question-list`, data, options).then((response) => {
         return response;
     })
     .catch((error) => {
@@ -53,7 +53,7 @@ function newAnswer(data) {
         headers: authHeader()
     };
 
-    return axios.post(`http://localhost:4000/api/new-answer`, data, options).then((response) => {
+    return axios.post(`${APP_HOST}api/new-answer`, data, options).then((response) => {
         return response;
     })
     .catch((error) => {
@@ -66,7 +66,7 @@ function getAnswerList(data) {
         headers: authHeader()
     };
 
-    return axios.post(`http://localhost:4000/api/get-answer-list`, data, options).then((response) => {
+    return axios.post(`${APP_HOST}api/get-answer-list`, data, options).then((response) => {
         return response;
     })
     .catch((error) => {

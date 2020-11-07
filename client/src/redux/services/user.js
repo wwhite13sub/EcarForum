@@ -1,4 +1,4 @@
-import { authHeader } from '../helpers';
+import { authHeader, APP_HOST } from '../helpers';
 import axios from 'axios';
 
 export const userService = {
@@ -12,7 +12,7 @@ function login(username, password) {
         username: username,
         password: password
     }
-    return axios.post(`http://localhost:4000/api/login`, data).then((user) => {
+    return axios.post(`${APP_HOST}api/login`, data).then((user) => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(user.data.user));
         return user;
@@ -35,7 +35,7 @@ function logout() {
 }
 
 function register(user) {
-    return axios.post(`http://localhost:4000/api/register`, user).then((result) => {
+    return axios.post(`${APP_HOST}api/register`, user).then((result) => {
       return result;
     })
     .catch((error) => {
