@@ -22,12 +22,14 @@ function NavButtons(props) {
   return (
     <Nav className="nav navbar-nav right">
       <form method="post" className="form-inline my-2 my-lg-0">
-        <button type="button" className="btn btn-primary my-2 my-sm-0">
+        {/* <button type="button" className="btn btn-primary my-2 my-sm-0"> */}
+          <div className="my-2 my-sm-0">
           <Link to="/Register">
             Register
           </Link>
-        </button>
-        <button type="button" className="btn btn-primary my-2 my-sm-0">
+          </div>
+        {/* </button> */}
+        <button type="button" className="btn btn-primary ml-3 my-2 my-sm-0">
           <Link to="/Login">
             Login
           </Link>

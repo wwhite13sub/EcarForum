@@ -135,6 +135,10 @@ body {
   word-wrap: break-word;
 }
 
+.reg {
+  margin-left: 35%;
+
+}
 
 @media only screen and (max-width: 650px) {
   .absolute {
