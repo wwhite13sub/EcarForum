@@ -3,6 +3,7 @@ import React from 'react';
 import { userActions, alertActions } from '../redux/actions';
 import { connect } from 'react-redux';
 import { Redirect } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 import {
    Form,
@@ -86,12 +87,12 @@ class LoginForm extends React.Component {
         return (
             <Form className="form-container" onSubmit={this.handleSubmit}>
                 <h1>Login</h1>
-                <Form.Group controlId="formBasicUsername">
+                <Form.Group controlId="formBasicUsername" className="w-50 w-sm-25">
                     <Form.Label>Username</Form.Label>
                     <Form.Control onChange={this.handleChange} type="text" placeholder="Enter Username" name="username" />
                 </Form.Group>
 
-                <Form.Group controlId="formBasicPassword">
+                <Form.Group controlId="formBasicPassword" className="w-50 w-sm-25">
                     <Form.Label>Password</Form.Label>
                     <Form.Control onChange={this.handleChange} type="password" placeholder="Password" name="password" />
                 </Form.Group>
@@ -107,6 +108,10 @@ class LoginForm extends React.Component {
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
+                
+                <div className="ml-5 my-2 my-sm-0" className="reg">
+                If you have not registered click here on <Link to="/Register">Register</Link>
+                </div>
             </Form>
         )
     }
