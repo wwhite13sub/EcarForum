@@ -140,10 +140,10 @@ VALUES ('Tesla Model 3');
 commit;
 
 2.) use Qforum;
-*INSERT INTO User_TBL (user_password, user_firstname) 
-*VALUES ('$2a$10$Gnffnxn7s8BgFnKliq0kg.zWNKq8hnliPth6oEQk.1.wa.52lt8HW', 'Buddyman');
-*INSERT INTO User_TBL (user_password, user_firstname) 
-*VALUES ('$2a$10$5uBDrKnZQAdBk9Ou/ku7IeEn8IAulULYM.h3HEat.wKrdzehkw9VS', 'Bellalady');
+INSERT INTO User_TBL (user_password, user_firstname) 
+VALUES ('$2a$10$Gnffnxn7s8BgFnKliq0kg.zWNKq8hnliPth6oEQk.1.wa.52lt8HW', 'Buddyman');
+INSERT INTO User_TBL (user_password, user_firstname) 
+VALUES ('$2a$10$5uBDrKnZQAdBk9Ou/ku7IeEn8IAulULYM.h3HEat.wKrdzehkw9VS', 'Bellalady');
 
 commit;
 
