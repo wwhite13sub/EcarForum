@@ -81,17 +81,23 @@ Create Queries
 0.) DROP DATABASE IF EXISTS Qforum;
 	CREATE DATABASE Qforum;
 	SELECT DATABASE();
+	
+	
 1.) use Qforum;
 	CREATE Table Category_TBL(
 	Category_num int NOT NULL AUTO_INCREMENT,
 	Category_descr varchar(20) NOT NULL, 
 	PRIMARY KEY ( Category_num ));
+	
+	
 2.) use Qforum;
 	CREATE Table User_TBL(
 	user_ID int NOT NULL AUTO_INCREMENT,
 	user_password varchar(255) NOT NULL, 
 	user_firstname varchar(20) NOT NULL,
 	PRIMARY KEY ( user_ID ));
+	
+	
 3.) use Qforum;
 	CREATE Table Question_TBL(
     	Question_num int NOT NULL AUTO_INCREMENT,
@@ -102,18 +108,20 @@ Create Queries
 	PRIMARY KEY (Question_num),
     	FOREIGN KEY FK_Question_Category_num(Category_num) REFERENCES 	Category_TBL(Category_num),
 	FOREIGN KEY FK_Question_user_ID(user_ID) REFERENCES User_TBL(user_ID));
+	
+	
 4.) use Qforum;
-    *CREATE Table Answer_TBL(
-    *Answer_num INT NOT NULL AUTO_INCREMENT,
-    *Category_num INT NOT NULL,
-    *Question_num INT NOT NULL,
-    *Answer_descr varchar(500) NOT NULL,
-    *user_ID INT NOT NULL,
-    *Answer_Date_Time DATETIME NOT NULL,
-    *PRIMARY KEY (Answer_num),
-    *FOREIGN KEY FK_Answer_Question_Categorynum (Category_num) REFERENCES Category_TBL(Category_num),
-    *FOREIGN KEY FK_Answer_Question_Questionnum (Question_num) REFERENCES Question_TBL(Question_num), 
-    *FOREIGN KEY FK_Answer_Question_user_ID (user_ID) REFERENCES User_TBL(user_ID));
+    CREATE Table Answer_TBL(
+    Answer_num INT NOT NULL AUTO_INCREMENT,
+    Category_num INT NOT NULL,
+    Question_num INT NOT NULL,
+    Answer_descr varchar(500) NOT NULL,
+    user_ID INT NOT NULL,
+    Answer_Date_Time DATETIME NOT NULL,
+    PRIMARY KEY (Answer_num),
+    FOREIGN KEY FK_Answer_Question_Categorynum (Category_num) REFERENCES Category_TBL(Category_num),
+    FOREIGN KEY FK_Answer_Question_Questionnum (Question_num) REFERENCES Question_TBL(Question_num), 
+    FOREIGN KEY FK_Answer_Question_user_ID (user_ID) REFERENCES User_TBL(user_ID));
 
 Insert Queries:
 
