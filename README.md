@@ -68,6 +68,7 @@ To run the app:
 ```sh
 npm run dev
 # and in another terminal, run the client side:
+cd client
 npm start
 ```
 
@@ -102,17 +103,17 @@ Create Queries
     	FOREIGN KEY FK_Question_Category_num(Category_num) REFERENCES 	Category_TBL(Category_num),
 	FOREIGN KEY FK_Question_user_ID(user_ID) REFERENCES User_TBL(user_ID));
 4.) use Qforum;
-    CREATE Table Answer_TBL(
-    Answer_num INT NOT NULL AUTO_INCREMENT,
-    Category_num INT NOT NULL,
-    Question_num INT NOT NULL,
-    Answer_descr varchar(500) NOT NULL,
-    user_ID INT NOT NULL,
-    Answer_Date_Time DATETIME NOT NULL,
-    PRIMARY KEY (Answer_num),
-    FOREIGN KEY FK_Answer_Question_Categorynum (Category_num) REFERENCES Category_TBL(Category_num),
-    FOREIGN KEY FK_Answer_Question_Questionnum (Question_num) REFERENCES Question_TBL(Question_num), 
-    FOREIGN KEY FK_Answer_Question_user_ID (user_ID) REFERENCES User_TBL(user_ID));
+    *CREATE Table Answer_TBL(
+    *Answer_num INT NOT NULL AUTO_INCREMENT,
+    *Category_num INT NOT NULL,
+    *Question_num INT NOT NULL,
+    *Answer_descr varchar(500) NOT NULL,
+    *user_ID INT NOT NULL,
+    *Answer_Date_Time DATETIME NOT NULL,
+    *PRIMARY KEY (Answer_num),
+    *FOREIGN KEY FK_Answer_Question_Categorynum (Category_num) REFERENCES Category_TBL(Category_num),
+    *FOREIGN KEY FK_Answer_Question_Questionnum (Question_num) REFERENCES Question_TBL(Question_num), 
+    *FOREIGN KEY FK_Answer_Question_user_ID (user_ID) REFERENCES User_TBL(user_ID));
 
 Insert Queries:
 
@@ -131,10 +132,10 @@ VALUES ('Tesla Model 3');
 commit;
 
 2.) use Qforum;
-INSERT INTO User_TBL (user_password, user_firstname) 
-VALUES ('$2a$10$Gnffnxn7s8BgFnKliq0kg.zWNKq8hnliPth6oEQk.1.wa.52lt8HW', 'Buddyman');
-INSERT INTO User_TBL (user_password, user_firstname) 
-VALUES ('$2a$10$5uBDrKnZQAdBk9Ou/ku7IeEn8IAulULYM.h3HEat.wKrdzehkw9VS', 'Bellalady');
+*INSERT INTO User_TBL (user_password, user_firstname) 
+*VALUES ('$2a$10$Gnffnxn7s8BgFnKliq0kg.zWNKq8hnliPth6oEQk.1.wa.52lt8HW', 'Buddyman');
+*INSERT INTO User_TBL (user_password, user_firstname) 
+*VALUES ('$2a$10$5uBDrKnZQAdBk9Ou/ku7IeEn8IAulULYM.h3HEat.wKrdzehkw9VS', 'Bellalady');
 
 commit;
 
