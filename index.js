@@ -29,7 +29,7 @@ const category = require('./routes/category');
 
 // test route
 router.get('/', function(req, res) {
-    res.json({ message: 'welcome to our upload module apis' });
+    res.json({ message: 'welcome ' });
 });
 //route to handle user registration
 router.post('/register',register.register);
